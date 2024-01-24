@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odin Library</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="modal">
+    <div class="modal-content">
+        <p style="font: bold 1.5rem Roboto;  text-align: center;">New book</p>
+        <form action="">
+        <div><label for="newTitle">Title: </label><input type="text" name="newTitle" class="newTitle" required></div>
+        <div><label for="newAuthor">Author: </label><input type="text" name="newAuthor" class="newAuthor" required></div>
+        <div><label for="newPages">Pages: </label><input type="number" name="newPages" class="newPages" required></div>
+        <div><label for="newRead">Read? </label><input type="checkbox" name="newRead" class="newRead" required></div>
+        <div class="btns"><button type="button" onclick="closeModal()">Cancel</button><button type="button" onclick="newBook()">Add</button></div>
+    </form></div></div>
+
+
+    <div class="container">
+        <div class="pageTitle">
+            <h1 class="Title">Odin Library</h1>
+        </div>
+        <div class="addButton"><button type="button" onclick="addBook()" class="addBook">New Book</button></div>
+        <div class="libraryContainer">
+            <table class="library">
+                <thead class="libHead">
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Pages</th>
+                        <th>Read? </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">
+            <p><a href="https://github.com/lythzz"><i class="fa-brands fa-github"></i> lythzz</a></p>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/eab526baf9.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
