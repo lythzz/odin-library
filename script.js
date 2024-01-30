@@ -9,26 +9,67 @@ const modal = document.querySelector('.modal')
 const addBook = () =>  modal.style.display = 'block';
 const closeModal = () => modal.style.display = 'none';
 
-let myLibrary = [
-    sampleBook={
-        'title':1984,
-        'author': 'George Orwell',
-        'pages':328,
-        'read':true
+let myLibrary=[]
+if(localStorage.length<1){
+    const sampleBook={
+            'title':1984,
+            'author': 'George Orwell',
+            'pages':328,
+            'read':true
+        }
+    myLibrary.push(sampleBook)
+}else{
+    for(let i = 0; i<localStorage.length; i++){
+        console.log(i)
+        const book = JSON.parse(localStorage[`book${i}`])
+        myLibrary.push(book)
     }
-]
+}
 
-function Book (title,author,pages,read){
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
+class Book {
+    constructor(title,author,pages,read){
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.read = read
+    }
 }
 
 function updateBooks () {
+    let book = myLibrary[myLibrary.length-1]
+    let row = document.createElement('tr')
+    let titleCell = document.createElement('td')
+    let authorCell = document.createElement('td')
+    let pagesCell = document.createElement('td')
+    let readCell = document.createElement('td')
+    let deleteCell = document.createElement('td')
+    let deleteBtn = document.createElement('btn')
+    deleteBtn.setAttribute('class', 'delBtn')
+    deleteBtn.innerText='Delete'
+    deleteBtn.addEventListener('click',()=>{
+        table.removeChild(row)
+          })
+   
+    titleCell.innerText = book.title
+    authorCell.innerText = book.author
+    pagesCell.innerText = book.pages
+    readCell.innerHTML = (book.read?`<input type="checkbox" checked>`:`<input type="checkbox">`)
+    deleteCell.appendChild(deleteBtn)
 
-        let book = myLibrary[myLibrary.length-1]
+    pagesCell.setAttribute('small', 1)
+    readCell.setAttribute('small', 1)
+    deleteCell.setAttribute('small', 1)
 
+    row.appendChild(titleCell)
+    row.appendChild(authorCell)
+    row.appendChild(pagesCell)
+    row.appendChild(readCell)
+    row.appendChild(deleteCell)
+    table.appendChild(row)
+}
+
+const displayBooksAtReload = () => {
+    for(let i=0;i<myLibrary.length;i++){
         let row = document.createElement('tr')
         let titleCell = document.createElement('td')
         let authorCell = document.createElement('td')
@@ -37,28 +78,41 @@ function updateBooks () {
         let deleteCell = document.createElement('td')
         let deleteBtn = document.createElement('btn')
         deleteBtn.setAttribute('class', 'delBtn')
+        deleteBtn.setAttribute('index', i)
         deleteBtn.innerText='Delete'
         deleteBtn.addEventListener('click',()=>{
             table.removeChild(row)
+            const i = deleteBtn.getAttribute('index')
+            myLibrary[i]=null
+            console.log(i   )
+            updateStorage()
           })
    
-        titleCell.innerText = book.title
-        authorCell.innerText = book.author
-        pagesCell.innerText = book.pages
-        readCell.innerHTML = (book.read?`<input type="checkbox" checked>`:`<input type="checkbox">`)
+        titleCell.innerText = myLibrary[i].title
+        authorCell.innerText = myLibrary[i].author
+        pagesCell.innerText = myLibrary[i].pages
+        readCell.innerHTML = (myLibrary[i].read?`<input type="checkbox" checked>`:`<input type="checkbox">`)
         deleteCell.appendChild(deleteBtn)
-
         pagesCell.setAttribute('small', 1)
         readCell.setAttribute('small', 1)
         deleteCell.setAttribute('small', 1)
-
         row.appendChild(titleCell)
         row.appendChild(authorCell)
         row.appendChild(pagesCell)
         row.appendChild(readCell)
         row.appendChild(deleteCell)
         table.appendChild(row)
+        };        
+}
 
+const updateStorage= () =>{
+    localStorage.clear()
+        for(let i=0;i<myLibrary.length;i++){
+            if(myLibrary[i]!==null){
+            const storageIndex = localStorage.length
+            const book = JSON.stringify(myLibrary[i])
+            localStorage.setItem(`book${storageIndex}`, book)
+        }}
 }
 
 const newBook = () => {
@@ -76,10 +130,9 @@ const newBook = () => {
     });
 
     if(newTitle==''||newPages==''||newAuthor==''){
-        alert("Please provide the book info")
+        alert("Please provide all the book info")
         isValid = false
     }
-
     if(isValid){
     document.querySelector('.newTitle').value = ''
     document.querySelector('.newAuthor').value = ''
@@ -89,9 +142,9 @@ const newBook = () => {
 
     let book = new Book(newTitle, newAuthor, newPages, newRead)
     myLibrary.push(book)
-    console.log(myLibrary)
     closeModal()
     updateBooks()
+    updateStorage()
 }}
 
-updateBooks()
+displayBooksAtReload()
