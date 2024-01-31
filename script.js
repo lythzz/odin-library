@@ -48,6 +48,7 @@ function updateBooks () {
     deleteBtn.innerText='Delete'
     deleteBtn.addEventListener('click',()=>{
         table.removeChild(row)
+        delete myLibrary[myLibrary.length-1]
           })
    
     titleCell.innerText = book.title
